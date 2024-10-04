@@ -1,39 +1,16 @@
 import streamlit as st
 import pickle
-import pandas as pd
+import pandas as pd 
+import gzip
 import requests
-import os
-import subprocess
-import sys
 
-# Function to install gdown if it's not already installed
-def install_gdown():
-    try:
-        import gdown
-    except ImportError:
-        # Install gdown if not found
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'gdown'])
+import pickle
 
-# Install gdown
-install_gdown()
-import gdown  # Import gdown after installation
+# Load the similarity matrix from the compressed file
+with gzip.open('similarity.pkl.gz', 'rb') as f:
+    similarity = pickle.load(f)
 
-# Function to download similarity.pkl from Google Drive if it doesn't exist
-def download_similarity_file():
-    file_id = '1iS9QWhaFr17mJUOOokbEOOqwdbisTlld'  # Replace with your actual Google Drive File ID
-    url = f"https://drive.google.com/uc?id={file_id}"
-    output_path = 'similarity.pkl'
-    
-    # Check if the file already exists, if not, download it
-    if not os.path.exists(output_path):
-        with st.spinner("Downloading model file..."):
-            gdown.download(url, output_path, quiet=False)
-
-# Download the similarity file if necessary
-download_similarity_file()
-
-# Load the similarity.pkl file
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+print("File loaded successfully!")
 
 def recommend(movie):
     recommended_movies = []
@@ -80,3 +57,5 @@ if st.button('Recommend'):
     with col5:
         st.text(names[4])
         st.image(posters[4])
+
+
