@@ -1,16 +1,16 @@
 import streamlit as st
 import pickle
 import pandas as pd 
-import gzip
+import lzma
 import requests
 
 import pickle
 
 # Load the similarity matrix from the compressed file
-with gzip.open('similarity.pkl.gz', 'rb') as f:
-    similarity = pickle.load(f)
+with lzma.open('similarity.pkl.xz', 'rb') as f_in:
+    similarity = pickle.load(f_in)
 
-print("File loaded successfully!")
+
 
 def recommend(movie):
     recommended_movies = []
