@@ -2,8 +2,21 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
-import gdown
 import os
+import subprocess
+import sys
+
+# Function to install gdown if it's not already installed
+def install_gdown():
+    try:
+        import gdown
+    except ImportError:
+        # Install gdown if not found
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'gdown'])
+
+# Install gdown
+install_gdown()
+import gdown  # Import gdown after installation
 
 # Function to download similarity.pkl from Google Drive if it doesn't exist
 def download_similarity_file():
@@ -67,5 +80,3 @@ if st.button('Recommend'):
     with col5:
         st.text(names[4])
         st.image(posters[4])
-
-
